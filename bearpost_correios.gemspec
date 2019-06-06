@@ -29,6 +29,11 @@ Gem::Specification.new do |spec|
 
   # spec.add_development_dependency "pg"
 
+  spec.add_development_dependency "savon"
+
+  spec.add_development_dependency "wicked_pdf"
+  spec.add_development_dependency "wkhtmltopdf-binary"
+
   spec.add_development_dependency "listen"
   spec.add_development_dependency 'pg', '>= 0.18', '< 2.0'
   spec.add_development_dependency 'puma', '~> 3.7'

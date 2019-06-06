@@ -60,9 +60,9 @@
 
       <%= f.fields_for 'shipping_methods' do |ff| %>
 
-
       <!-- PAC Settings -->
       <%= ff.fields_for 'PAC' do |fff| %>
+      <% pac_settings = settings.dig('shipping_methods','PAC') || {}  %>
       <div class="col-md-4">
         <div class="kt-portlet">
           <div class="kt-portlet__head">
@@ -70,6 +70,13 @@
               <h3 class="kt-portlet__head-title">
                 PAC
               </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <div class="kt-portlet__head-toolbar-wrapper">
+                <%= link_to "/correios/#{account.id}/PAC/send_plp", class: "btn btn-light btn-elevate-hover btn-pill", method: :post do %>
+                  <i class="flaticon2-rocket-2"></i> Disparar PLP
+                <% end %>
+              </div>
             </div>
           </div>
 
@@ -79,20 +86,21 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <%= fff.label 'Qtd. mínima de etiquetas' %>
-                    <%= fff.text_field :label_minimum_quantity, class: "form-control" %>
+                    <%= fff.text_field :label_minimum_quantity, value: pac_settings['label_reorder_quantity'], class: "form-control" %>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <%= fff.label 'Qtd. de recompra' %>
-
-                    <%= fff.text_field :label_reorder_quantity, class: "form-control" %>
+                    <%= fff.text_field :label_reorder_quantity, value: pac_settings['label_reorder_quantity'], class: "form-control" %>
                   </div>
                 </div>
               </div>
+
               <% if settings['shipping_methods']['PAC']['ranges'] %>
+
               <table class="table">
-                <thead>
+                <thead class="thead-light">
                   <th>Prefixo</th>
                   <th>Próxima</th>
                   <th>Última</th>
@@ -114,13 +122,84 @@
                 </tfoot>
               </table>
               <% end %>
-                <%= link_to "Solicitar faixa de etiquetas", "#", class: "mb-1 btn btn-sm btn-secondary" %>
+                <%= link_to "Solicitar faixa de etiquetas", "/correios/#{account.id}/PAC/", method: :post, class: "mb-1 btn btn-sm btn-secondary" %>
             </div>
           </div>
         </div>
       </div>
       <% end %>
       <!-- END PAC Settings -->
+
+
+      <!-- Sedex Settings -->
+      <%= ff.fields_for 'Sedex' do |fff| %>
+      <% pac_settings = settings.dig('shipping_methods','Sedex') || {}  %>
+      <div class="col-md-4">
+        <div class="kt-portlet">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Sedex
+              </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <div class="kt-portlet__head-toolbar-wrapper">
+                <%= link_to "/correios/#{account.id}/Sedex/send_plp", class: "btn btn-light btn-elevate-hover btn-pill", method: :post do %>
+                  <i class="flaticon2-rocket-2"></i> Disparar PLP
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div class="kt-portlet__body" kt-hidden-height="163" style="">
+            <div class="kt-portlet__content">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= fff.label 'Qtd. mínima de etiquetas' %>
+                    <%= fff.text_field :label_minimum_quantity, value: pac_settings['label_minimum_quantity'], class: "form-control" %>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <%= fff.label 'Qtd. de recompra' %>
+                    <%= fff.text_field :label_reorder_quantity, value: pac_settings['label_reorder_quantity'], class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <% if settings['shipping_methods']['Sedex']['ranges'].present? %>
+
+              <table class="table">
+                <thead class="thead-light">
+                  <th>Prefixo</th>
+                  <th>Próxima</th>
+                  <th>Última</th>
+                  <th>Sufixo</th>
+                  <th>Disponíveis</th>
+                </thead>
+                <% settings['shipping_methods']['Sedex']['ranges'].each do |range| %>
+                <tr>
+                  <td><%= range['prefix'] %></td>
+                  <td><%= range['next_number'] %></td>
+                  <td><%= range['last_number'] %></td>
+                  <td><%= range['sufix'] %></td>
+                  <td><%= range['last_number'] - range['next_number'] + 1 %></td>
+                </tr>
+                <% end %>
+                <tfoot>
+                  <td colspan="4">Total</td>
+                  <td><%= @carrier.count_available_labels(account,'Sedex') %></td>
+                </tfoot>
+              </table>
+              <% end %>
+                <%= link_to "Solicitar faixa de etiquetas", "/correios/#{account.id}/Sedex/", method: :post, class: "mb-1 btn btn-sm btn-secondary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <!-- END Sedex Settings -->
 
       <% end %>
     </div>

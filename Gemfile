@@ -13,3 +13,6 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+gem 'chunky_png'
+gem 'barby', require: %w(barby barby/barcode/code_128 barby/outputter/png_outputter barby/outputter)
