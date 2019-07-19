@@ -167,7 +167,8 @@ class Carrier::Correios < Carrier
       create_plp([shipment])
     end
 
-    def build_xml(shipment)
+    def build_xml(shipments)
+      account  = shipments.first.account
       posting_card = account.correios_settings.dig('general','Cartão')
       contract = account.correios_settings.dig('general','Contrato')
       administrative_code = account.correios_settings.dig('general','Código Administrativo')
