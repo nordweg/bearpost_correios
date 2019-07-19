@@ -164,7 +164,10 @@ class Carrier::Correios < Carrier
     end
 
     def send_to_carrier(shipment)
-      create_plp([shipment])
+      plp_number = create_plp([shipment])
+      settings = shipment.settings
+      settings['plp'] = plp_number
+      shipment.update(settings:settings)
     end
 
     def build_xml(shipments)
