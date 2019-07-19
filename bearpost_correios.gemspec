@@ -29,6 +29,8 @@ Gem::Specification.new do |spec|
 
   # spec.add_development_dependency "pg"
 
+  spec.add_development_dependency "awesome_print"
+
   spec.add_development_dependency "savon"
 
   spec.add_development_dependency "wicked_pdf"

@@ -18,30 +18,31 @@ class Carrier::Correios
       ]
     end
 
-    def settings
+    def general_settings
+      [
+        'Usuário',
+        'Senha',
+        'Código Administrativo',
+        'Contrato',
+        'Codigo Serviço',
+        'Cartão',
+        'CNPJ'
+      ]
+    end
+
+    def shipping_method_settings
       {
-        'general': [
-          'Usuário',
-          'Senha',
-          'Código Administrativo',
-          'Contrato',
-          'Codigo Serviço',
-          'Cartão',
-          'CNPJ'
+        'PAC': [
+          'carrier_service_id',
+          'label_minimum_quantity',
+          'label_reorder_quantity',
         ],
-        'shipping_methods': {
-          'PAC': [
-            'carrier_service_id',
-            'label_minimum_quantity',
-            'label_reorder_quantity',
-          ],
-          'Sedex': [
-            'carrier_service_id',
-            'label_minimum_quantity',
-            'label_reorder_quantity'
-          ]
-        }
-      }.with_indifferent_access
+        'Sedex': [
+          'carrier_service_id',
+          'label_minimum_quantity',
+          'label_reorder_quantity'
+        ]
+      }
     end
 
     def shipping_methods
@@ -174,6 +175,10 @@ class Carrier::Correios
         "senha" => password,
       }
       client(account).call(:solicita_xml_plp, message:message)
+    end
+
+    def send_to_carrier(shipment)
+      send_to_carrier
     end
 
     def build_xml(account)
