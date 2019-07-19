@@ -32,7 +32,7 @@ class Carrier::Correios < Carrier
           'label_reorder_quantity'
         ]
       }
-    end  
+    end
 
     def tracking_url
       "https://www2.correios.com.br/sistemas/rastreamento/"
@@ -130,13 +130,14 @@ class Carrier::Correios < Carrier
       ranges.split(',')
     end
 
-    def close_plp(account,shipping_method)
+    def create_plp(shipments)
+      account  = shipments.first.account
       user     = account.correios_settings.dig('general','Usuário')
       password = account.correios_settings.dig('general','Senha')
       posting_card = account.correios_settings.dig('general','Cartão')
-      xml = build_xml(account)
+      xml = build_xml(shipments)
       labels = []
-      account.shipments.ready.each do |shipment|
+      shipments.each do |shipment|
         labels << shipment.tracking_number[0..9] + shipment.tracking_number[-2..-1]
       end
       message = {
@@ -163,15 +164,14 @@ class Carrier::Correios < Carrier
     end
 
     def send_to_carrier(shipment)
-      send_to_carrier
+      create_plp([shipment])
     end
 
-    def build_xml(account)
+    def build_xml(shipment)
       posting_card = account.correios_settings.dig('general','Cartão')
       contract = account.correios_settings.dig('general','Contrato')
       administrative_code = account.correios_settings.dig('general','Código Administrativo')
 
-      # builder = Nokogiri::XML::Builder.new(encoding: Encoding::ISO_8859_1.name) do |xml|
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.correioslog {
           xml.tipo_arquivo 'Postagem'
@@ -199,7 +199,7 @@ class Carrier::Correios < Carrier
             xml.email_remetente account.email
           }
           xml.forma_pagamento
-          account.shipments.ready.each do |shipment|
+          shipments.each do |shipment|
             package = shipment.packages.last
             xml.objeto_postal {
               xml.numero_etiqueta shipment.tracking_number[0..9] + shipment.tracking_number[-2..-1]
