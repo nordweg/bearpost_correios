@@ -1,16 +1,5 @@
-class Carrier::Correios
+class Carrier::Correios < Carrier
   class << self
-    def id
-      name.demodulize.downcase
-    end
-
-    def display_name
-      id.titleize
-    end
-
-    def settings_field
-      "#{id}_settings"
-    end
 
     def shipment_menu_links
       [
@@ -43,11 +32,7 @@ class Carrier::Correios
           'label_reorder_quantity'
         ]
       }
-    end
-
-    def shipping_methods
-      settings[:shipping_methods].keys
-    end
+    end  
 
     def tracking_url
       "https://www2.correios.com.br/sistemas/rastreamento/"

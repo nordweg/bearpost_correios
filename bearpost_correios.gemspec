@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
     spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
+    "public gem pushes."
   end
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
@@ -29,13 +29,13 @@ Gem::Specification.new do |spec|
 
   # spec.add_development_dependency "pg"
 
-  spec.add_development_dependency "awesome_print"
-
+  
   spec.add_development_dependency "savon"
 
+
+  # Bearpost Requirements
   spec.add_development_dependency "wicked_pdf"
   spec.add_development_dependency "wkhtmltopdf-binary"
-
   spec.add_development_dependency "listen"
   spec.add_development_dependency 'pg', '>= 0.18', '< 2.0'
   spec.add_development_dependency 'puma', '~> 3.7'
@@ -44,4 +44,13 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coffee-rails', '~> 4.2'
   spec.add_development_dependency 'turbolinks', '~> 5'
   spec.add_development_dependency 'jbuilder', '~> 2.5'
+  spec.add_development_dependency "awesome_print"
+  spec.add_development_dependency "chunky_png"
+  spec.add_development_dependency "barby"
+  spec.add_development_dependency "paperclip", "~> 6.0.0"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "faraday"
+  spec.add_development_dependency "faraday_middleware"
+  spec.add_development_dependency "devise"
+  spec.add_development_dependency "active_model_serializers"
 end
