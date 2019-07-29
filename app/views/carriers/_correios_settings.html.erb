@@ -27,7 +27,7 @@
     <%= form_for :settings, url: "/accounts/#{account.id}/update_carrier_settings" do |f| %>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <div class="kt-portlet">
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
@@ -53,6 +53,29 @@
             <% end %>
           </div>
         </div> <!-- Close portlet -->
+      </div>
+      <div class="col-md-4">
+        <div class="kt-portlet">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Sincronização de pedidos
+              </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+              <div class="kt-portlet__head-toolbar-wrapper">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="kt-portlet__body" kt-hidden-height="163" style="">
+            <div class="kt-portlet__content">
+              <p>Enviar todos os pedidos com status "pronto para envio" para os Correios</p>
+              <%= link_to "Enviar", "", class: "btn btn-secondary", method:'post' %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -97,8 +120,7 @@
                 </div>
               </div>
 
-              <% if settings['shipping_methods']['PAC'] && settings['shipping_methods']['PAC']['ranges'] %>
-
+              <% if settings.dig('shipping_methods','PAC','ranges') %>
               <table class="table">
                 <thead class="thead-light">
                   <th>Prefixo</th>

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bearpost_correios (0.1.21)
+    bearpost_correios (0.1.22)
       rails (~> 5.2)
 
 GEM
