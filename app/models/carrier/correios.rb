@@ -148,8 +148,7 @@ class Carrier::Correios < Carrier
         "usuario" => user,
         "senha" => password,
       }
-      response = client(account).call(:fecha_plp_varios_servicos, message:message)
-      response.body.dig(:fecha_plp_varios_servicos_response,:return)
+      client(account).call(:fecha_plp_varios_servicos, message:message)
     end
 
     def get_plp_xml(account,plp_number)
@@ -163,12 +162,35 @@ class Carrier::Correios < Carrier
       client(account).call(:solicita_xml_plp, message:message)
     end
 
-    def send_to_carrier(shipment)
-      plp_number = create_plp([shipment])
-      settings = shipment.settings
-      settings['plp'] = plp_number
-      shipment.update(settings:settings)
+    def send_to_carrier(shipments)
+      response = []
+      begin
+        correios_response = create_plp(shipments)
+        plp_number = correios_response.body.dig(:fecha_plp_varios_servicos_response,:return)
+        message = "Enviado na PLP #{plp_number}"
+        shipments.each do |shipment|
+          settings = shipment.settings
+          settings['plp'] = plp_number
+          shipment.update(settings:settings,sent_to_carrier:true)
+          response << {
+            shipment: shipment,
+            success: shipment.sent_to_carrier,
+            message: message
+          }
+        end
+      rescue Exception => e
+        shipments.each do |shipment|
+          response << {
+            shipment: shipment,
+            success: shipment.sent_to_carrier,
+            message: e.message
+          }
+        end
+      end
+      response
     end
+
+
 
     def build_xml(shipments)
       account  = shipments.first.account
