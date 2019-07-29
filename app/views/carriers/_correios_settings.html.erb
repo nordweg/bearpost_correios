@@ -190,8 +190,7 @@
                 </div>
               </div>
 
-              <% if settings['shipping_methods']['Sedex']['ranges'].present? %>
-
+              <% if settings.dig('shipping_methods','Sedex','ranges').present? %>
               <table class="table">
                 <thead class="thead-light">
                   <th>Prefixo</th>
