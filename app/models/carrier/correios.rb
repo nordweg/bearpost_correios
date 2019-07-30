@@ -61,6 +61,11 @@ class Carrier::Correios < Carrier
       tracking_number
     end
 
+    def prepare_label(shipment)
+      shipment.tracking_number = get_tracking_number(shipment)
+      shipment.save
+    end
+
     # private
 
     def check_tracking_number_availability(account,shipping_method)
