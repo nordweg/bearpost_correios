@@ -62,8 +62,10 @@ class Carrier::Correios < Carrier
     end
 
     def prepare_label(shipment)
-      shipment.tracking_number = get_tracking_number(shipment)
-      shipment.save
+      if shipment.tracking_number.blank?
+        shipment.tracking_number = get_tracking_number(shipment)
+        shipment.save
+      end 
     end
 
     # private
