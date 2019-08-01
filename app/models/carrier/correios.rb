@@ -68,6 +68,18 @@ class Carrier::Correios < Carrier
       end
     end
 
+    # def get_delivery_updates(shipment)
+    #   message = {
+    #     "usuario" => "igor@nordweg.com",
+    #     "senha" => "p7Q56",
+    #     "tipo" => "L",
+    #     "resultado" => "T",
+    #     "lingua" => "101",
+    #     "objetos" => "AA598971235BR"
+    #   }
+    #   tracking_client.call(:busca_eventos, message:message)
+    # end
+
     # private
 
     def check_tracking_number_availability(account,shipping_method)
@@ -331,6 +343,13 @@ class Carrier::Correios < Carrier
       Savon.client(
         wsdl: "https://apphom.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl",
         basic_auth: [user,password],
+        headers: { 'SOAPAction' => '' }
+      )
+    end
+
+    def tracking_client
+      Savon.client(
+        wsdl: "http://webservice.correios.com.br/service/rastro/Rastro.wsdl",
         headers: { 'SOAPAction' => '' }
       )
     end
