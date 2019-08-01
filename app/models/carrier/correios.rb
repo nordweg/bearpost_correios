@@ -65,7 +65,7 @@ class Carrier::Correios < Carrier
       if shipment.tracking_number.blank?
         shipment.tracking_number = get_tracking_number(shipment)
         shipment.save
-      end 
+      end
     end
 
     # private
@@ -242,18 +242,18 @@ class Carrier::Correios < Carrier
               xml.peso package.weight
               xml.rt2
               xml.destinatario {
-                xml.nome_destinatario shipment.recipient_full_name
-                xml.telefone_destinatario shipment.recipient_phone
-                xml.email_destinatario shipment.recipient_email
-                xml.logradouro_destinatario shipment.recipient_street
-                xml.complemento_destinatario shipment.recipient_complement
-                xml.numero_end_destinatario shipment.recipient_number
+                xml.nome_destinatario shipment.full_name
+                xml.telefone_destinatario shipment.phone
+                xml.email_destinatario shipment.email
+                xml.logradouro_destinatario shipment.street
+                xml.complemento_destinatario shipment.complement
+                xml.numero_end_destinatario shipment.number
               }
               xml.nacional {
-                xml.bairro_destinatario shipment.recipient_neighborhood
-                xml.cidade_destinatario shipment.recipient_city
-                xml.uf_destinatario shipment.recipient_state
-                xml.cep_destinatario shipment.recipient_zip
+                xml.bairro_destinatario shipment.neighborhood
+                xml.cidade_destinatario shipment.city
+                xml.uf_destinatario shipment.state
+                xml.cep_destinatario shipment.zip
                 xml.numero_nota_fiscal shipment.invoice_number
                 xml.serie_nota_fiscal shipment.invoice_series
                 xml.natureza_nota_fiscal
