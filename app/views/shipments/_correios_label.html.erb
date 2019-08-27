@@ -1,3 +1,6 @@
+<% shipment = package.shipment %>
+<% total_packages = shipment.packages.size %>
+
 <style>
 .label {
   font-size: 20px;
@@ -31,14 +34,21 @@ h4 {
   margin-top: 10px;
 }
 
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
 </style>
 
 <div class="label">
-  <% shipment = package.shipment %>
-  <% total_packages = shipment.packages.size %>
-
-  <div class="package">
-    Pacote <%= shipment.packages.index(package) + 1 %>/<%= total_packages %><br>
+  <div class="space-between">
+    <div>
+      <%= shipment.carrier.display_name %>
+    </div>
+    <div>
+      Pacote <%= shipment.packages.index(package) + 1 %>/<%= total_packages %><br>
+    </div>
   </div>
 
   <% if shipment.tracking_number %>
