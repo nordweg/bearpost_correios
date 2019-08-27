@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/nordweg/bearpost_azul.git
+  revision: 3b9a0b1f52d22793b4c8f81b75f1ba671e0a87e4
+  specs:
+    bearpost_azul (0.1.2)
+      rails (~> 5.2)
+
 PATH
   remote: .
   specs:
@@ -225,6 +232,7 @@ DEPENDENCIES
   active_model_serializers
   awesome_print
   barby
+  bearpost_azul!
   bearpost_correios!
   byebug
   chunky_png

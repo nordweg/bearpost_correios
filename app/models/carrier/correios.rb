@@ -9,6 +9,8 @@ class Carrier::Correios < Carrier
 
     def general_settings
       [
+        'Usuário Rastreamento',
+        'Senha Rastreamento',
         'Usuário',
         'Senha',
         'Código Administrativo',
@@ -68,17 +70,29 @@ class Carrier::Correios < Carrier
       end
     end
 
-    # def get_delivery_updates(shipment)
-    #   message = {
-    #     "usuario" => "igor@nordweg.com",
-    #     "senha" => "p7Q56",
-    #     "tipo" => "L",
-    #     "resultado" => "T",
-    #     "lingua" => "101",
-    #     "objetos" => "AA598971235BR"
-    #   }
-    #   tracking_client.call(:busca_eventos, message:message)
-    # end
+    def get_delivery_updates(shipment)
+      message = {
+        "usuario" => shipment.account.correios_settings.dig('general','Usuário Rastreamento'),
+        "senha" => shipment.account.correios_settings.dig('general','Senha Rastreamento'),
+        "tipo" => "L",
+        "resultado" => "T",
+        "lingua" => "101",
+        "objetos" => "PS935735024BR"
+      }
+      response = tracking_client.call(:busca_eventos, message:message)
+      events = response.body.dig(:busca_eventos_response,:return,:objeto,:evento)
+      events.each do |event|
+        next if shipment.histories.find_by(description:event[:descricao])
+        shipment.histories.create(
+          description: event[:descricao],
+          city: event[:cidade],
+          state: event[:uf],
+          date: event[:data] + " " + event[:hora],
+          changed_by: 'Correios',
+          category: 'carrier'
+        )
+      end
+    end
 
     # private
 

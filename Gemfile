@@ -16,3 +16,7 @@ gemspec
 
 gem 'chunky_png'
 gem 'barby', require: %w(barby barby/barcode/code_128 barby/outputter/png_outputter barby/outputter)
+
+group :development do
+  gem 'bearpost_azul', :git => 'https://github.com/nordweg/bearpost_azul.git'
+end
