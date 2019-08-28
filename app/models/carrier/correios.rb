@@ -37,7 +37,7 @@ class Carrier::Correios < Carrier
     end
 
     def tracking_url
-      "https://www2.correios.com.br/sistemas/rastreamento/"
+      "https://rastreamentocorreios.info/consulta/{tracking}"
     end
 
     def get_tracking_number(shipment)
